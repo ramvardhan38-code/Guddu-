@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guddu - Work & Procurement</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 15px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    button {
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: #eef3ff;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #dce7ff;
+    }
+
+    .card {
+      margin-top: 20px;
+      padding: 18px;
+      background: #f8f9fc;
+      border-radius: 15px;
+      line-height: 1.6;
+    }
+
+    .back {
+      margin-top: 20px;
+      background: #222;
+      color: white;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>💼 Guddu Work</h1>
+
+  <p class="subtitle">
+    Work & Procurement Assistant
+  </p>
+
+  <div class="buttons">
+
+    <button onclick="showRFQ()">📋 RFQ</button>
+
+    <button onclick="showRFP()">📑 RFP</button>
+
+    <button onclick="showRFI()">🔎 RFI</button>
+
+    <button onclick="showSupplier()">🤝 Supplier</button>
+
+    <button onclick="showContract()">📄 Contract</button>
+
+    <button onclick="showSavings()">💰 Savings</button>
+
+    <button onclick="showSourcing()">🎯 Sourcing</button>
+
+    <button onclick="showChecklist()">✅ Checklist</button>
+
+  </div>
+
+  <div id="content" class="card">
+    👋 Welcome to Guddu Work & Procurement.
+    <br><br>
+    Select an option above.
+  </div>
+
+  <button class="back" onclick="goHome()">
+    🏠 Back to Guddu Home
+  </button>
+
+</div>
+
+
+<script>
+
+function show(text) {
+  document.getElementById("content").innerHTML = text;
+}
+
+
+function showRFQ() {
+
+  show(`
+    <h2>📋 RFQ</h2>
+
+    <b>RFQ Process</b>
+
+    <p>1. Define requirement</p>
+    <p>2. Prepare specifications / SOW</p>
+    <p>3. Identify suppliers</p>
+    <p>4. Issue RFQ</p>
+    <p>5. Receive quotations</p>
+    <p>6. Compare commercial offers</p>
+    <p>7. Negotiate</p>
+    <p>8. Select supplier</p>
+    <p>9. Obtain approvals</p>
+    <p>10. Create PO / Contract</p>
+  `);
+
+}
+
+
+function showRFP() {
+
+  show(`
+    <h2>📑 RFP</h2>
+
+    <b>RFP Process</b>
+
+    <p>1. Define business requirement</p>
+    <p>2. Prepare detailed SOW</p>
+    <p>3. Define evaluation criteria</p>
+    <p>4. Shortlist suppliers</p>
+    <p>5. Issue RFP</p>
+    <p>6. Supplier Q&A</p>
+    <p>7. Technical evaluation</p>
+    <p>8. Commercial evaluation</p>
+    <p>9. Negotiation</p>
+    <p>10. Award decision</p>
+  `);
+
+}
+
+
+function showRFI() {
+
+  show(`
+    <h2>🔎 RFI</h2>
+
+    <p>
+      An RFI helps understand the market before launching
+      an RFQ or RFP.
+    </p>
+
+    <p>• Supplier capabilities</p>
+    <p>• Available solutions</p>
+    <p>• Market landscape</p>
+    <p>• Technology capabilities</p>
+    <p>• Indicative pricing</p>
+  `);
+
+}
+
+
+function showSupplier() {
+
+  show(`
+    <h2>🤝 Supplier Evaluation</h2>
+
+    <p>• Commercial competitiveness</p>
+    <p>• Quality</p>
+    <p>• Delivery / SLA</p>
+    <p>• Financial stability</p>
+    <p>• Compliance</p>
+    <p>• Risk</p>
+    <p>• Past performance</p>
+  `);
+
+}
+
+
+function showContract() {
+
+  show(`
+    <h2>📄 Contract Management</h2>
+
+    <p>• Contract owner</p>
+    <p>• Supplier</p>
+    <p>• Effective date</p>
+    <p>• Expiry date</p>
+    <p>• Renewal notice</p>
+    <p>• Scope / SOW</p>
+    <p>• Pricing</p>
+    <p>• SLA / KPI</p>
+    <p>• Termination clause</p>
+    <p>• Confidentiality</p>
+  `);
+
+}
+
+
+function showSavings() {
+
+  show(`
+    <h2>💰 Savings Calculator</h2>
+
+    <p>Original Cost</p>
+
+    <input
+      id="oldCost"
+      type="number"
+      placeholder="Example: 1000000"
+      style="width:100%;padding:12px;box-sizing:border-box;"
+    >
+
+    <p>Negotiated Cost</p>
+
+    <input
+      id="newCost"
+      type="number"
+      placeholder="Example: 900000"
+      style="width:100%;padding:12px;box-sizing:border-box;"
+    >
+
+    <br><br>
+
+    <button onclick="calculateSavings()">
+      Calculate Savings
+    </button>
+
+    <div id="savingResult"></div>
+  `);
+
+}
+
+
+function calculateSavings() {
+
+  const oldCost =
+    Number(document.getElementById("oldCost").value);
+
+  const newCost =
+    Number(document.getElementById("newCost").value);
+
+  if (oldCost <= 0 || newCost < 0) {
+
+    document.getElementById("savingResult").innerHTML =
+      "<p>Please enter valid amounts.</p>";
+
+    return;
+  }
+
+  const savings = oldCost - newCost;
+
+  const percentage =
+    (savings / oldCost) * 100;
+
+  document.getElementById("savingResult").innerHTML =
+
+    "<br><b>Savings:</b> ₹" +
+    savings.toLocaleString("en-IN") +
+
+    "<br><b>Savings %:</b> " +
+    percentage.toFixed(2) +
+    "%";
+}
+
+
+function showSourcing() {
+
+  show(`
+    <h2>🎯 Strategic Sourcing</h2>
+
+    <p>1. Spend analysis</p>
+    <p>2. Market analysis</p>
+    <p>3. Supplier strategy</p>
+    <p>4. RFx strategy</p>
+    <p>5. Negotiation strategy</p>
+    <p>6. Supplier selection</p>
+    <p>7. Contracting</p>
+    <p>8. Savings tracking</p>
+  `);
+
+}
+
+
+function showChecklist() {
+
+  show(`
+    <h2>✅ Procurement Checklist</h2>
+
+    <p>☐ Requirement confirmed</p>
+    <p>☐ Budget confirmed</p>
+    <p>☐ SOW / specifications ready</p>
+    <p>☐ Supplier shortlist completed</p>
+    <p>☐ RFx issued</p>
+    <p>☐ Quotes / proposals received</p>
+    <p>☐ Evaluation completed</p>
+    <p>☐ Negotiation completed</p>
+    <p>☐ Approval obtained</p>
+    <p>☐ Contract / PO completed</p>
+  `);
+
+}
+
+
+function goHome() {
+
+  window.location.href = "index.html";
+
+}
+
+</script>
+
+</body>
+</html>
