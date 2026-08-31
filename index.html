@@ -71,7 +71,9 @@
       font-size: 20px;
     }
 
-    input {
+    input,
+    textarea,
+    select {
       width: 100%;
       box-sizing: border-box;
       padding: 12px;
@@ -79,6 +81,11 @@
       border: 1px solid #ddd;
       border-radius: 9px;
       font-size: 15px;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
     }
 
     .chat-box {
@@ -107,13 +114,6 @@
       box-shadow: 0 1px 5px rgba(0,0,0,0.06);
     }
 
-    .fund {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-    }
-
     .delete {
       background: #ffe5e5;
       padding: 8px;
@@ -126,6 +126,17 @@
       background: white;
       border-radius: 10px;
       line-height: 1.6;
+    }
+
+    .work-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .work-buttons button {
+      font-size: 14px;
+      padding: 12px;
     }
 
   </style>
@@ -155,19 +166,19 @@
       💰 Finance
     </button>
 
-    <button onclick="showMessage('💼 Work & Procurement mode is coming next.')">
+    <button onclick="openWork()">
       💼 Work
     </button>
 
-    <button onclick="showMessage('📄 Documents mode is coming next.')">
+    <button onclick="showMessage('📄 Documents module coming next.')">
       📄 Documents
     </button>
 
-    <button onclick="showMessage('🔎 Research mode is coming next.')">
+    <button onclick="showMessage('🔎 Research module coming next.')">
       🔎 Research
     </button>
 
-    <button onclick="showMessage('🎙️ Voice Assistant is coming next.')">
+    <button onclick="showMessage('🎙️ Voice Assistant coming next.')">
       🎙️ Voice
     </button>
 
@@ -238,9 +249,6 @@
 
     <h2>💰 Finance Dashboard</h2>
 
-
-    <!-- PORTFOLIO -->
-
     <h3>📊 My Mutual Funds</h3>
 
     <input
@@ -261,9 +269,6 @@
 
     <div id="fundList"></div>
 
-
-    <!-- TOTAL SIP -->
-
     <div class="result">
 
       <strong>Total Monthly SIP:</strong>
@@ -274,8 +279,6 @@
 
     </div>
 
-
-    <!-- SIP CALCULATOR -->
 
     <h3>🧮 SIP Calculator</h3>
 
@@ -301,54 +304,93 @@
       Calculate
     </button>
 
-    <div
-      id="sipResult"
-      class="result"
-    ></div>
+    <div id="sipResult" class="result"></div>
 
-
-    <!-- MARKET DIP -->
 
     <h3>📉 Market Dip Planner</h3>
-
-    <p>
-      Enter your available extra investment amount.
-    </p>
 
     <input
       type="number"
       id="dipAmount"
-      placeholder="Extra amount ₹"
+      placeholder="Extra investment amount ₹"
     >
 
     <button onclick="calculateDip()">
       Create Dip Plan
     </button>
 
-    <div
-      id="dipResult"
-      class="result"
-    ></div>
+    <div id="dipResult" class="result"></div>
 
-
-    <!-- NOTES -->
 
     <h3>📝 Investment Notes</h3>
 
     <input
       type="text"
       id="investmentNote"
-      placeholder="Example: Review portfolio every 6 months"
+      placeholder="Investment note"
     >
 
     <button onclick="saveNote()">
       Save Note
     </button>
 
-    <div
-      id="notesList"
-      class="result"
-    ></div>
+    <div id="notesList" class="result"></div>
+
+  </div>
+
+
+  <!-- WORK -->
+
+  <div
+    id="workSection"
+    class="section"
+    style="display:none;"
+  >
+
+    <h2>💼 Work & Procurement</h2>
+
+    <div class="work-buttons">
+
+      <button onclick="showRFQ()">
+        📋 RFQ
+      </button>
+
+      <button onclick="showRFP()">
+        📑 RFP
+      </button>
+
+      <button onclick="showRFI()">
+        🔎 RFI
+      </button>
+
+      <button onclick="showSupplier()">
+        🤝 Supplier
+      </button>
+
+      <button onclick="showContract()">
+        📄 Contract
+      </button>
+
+      <button onclick="showSavings()">
+        💰 Savings
+      </button>
+
+      <button onclick="showEmail()">
+        ✉️ Email
+      </button>
+
+      <button onclick="showChecklist()">
+        ✅ Checklist
+      </button>
+
+    </div>
+
+
+    <div id="workContent" class="result">
+
+      Select a Work & Procurement option above.
+
+    </div>
 
   </div>
 
@@ -357,640 +399,983 @@
 
 <script>
 
-  /* =========================
-     GENERAL
-  ========================= */
 
-  function showMessage(text) {
+/* =========================
+   GENERAL
+========================= */
 
-    document.getElementById("message").innerText = text;
+function showMessage(text) {
 
-  }
+  document.getElementById("message").innerText = text;
 
-
-  function handleEnter(event) {
-
-    if (event.key === "Enter") {
-
-      askGuddu();
-
-    }
-
-  }
+}
 
 
-  /* =========================
-     CHAT
-  ========================= */
+function handleEnter(event) {
 
-  function askGuddu() {
+  if (event.key === "Enter") {
 
-    const input =
-      document.getElementById("userInput");
-
-    const question =
-      input.value.trim();
-
-    if (question === "") {
-
-      showMessage(
-        "🤖 Guddu: Please type something first."
-      );
-
-      return;
-
-    }
-
-    const q =
-      question.toLowerCase();
-
-
-    if (
-      q.includes("hello") ||
-      q.includes("hi") ||
-      q.includes("hey")
-    ) {
-
-      showMessage(
-        "🤖 Guddu: Hello! 👋 How can I help you?"
-      );
-
-    }
-
-    else if (
-      q.includes("finance") ||
-      q.includes("investment") ||
-      q.includes("sip")
-    ) {
-
-      openFinance();
-
-    }
-
-    else if (
-      q.includes("task") ||
-      q.includes("reminder")
-    ) {
-
-      openTasks();
-
-    }
-
-    else if (
-      q.includes("what can you do") ||
-      q.includes("help")
-    ) {
-
-      showMessage(
-        "🤖 Guddu can currently manage Tasks 📋 and Finance 💰. Work, Documents, Research and Voice are coming next."
-      );
-
-    }
-
-    else {
-
-      showMessage(
-        '🤖 Guddu received: "' +
-        question +
-        '"'
-      );
-
-    }
-
-    input.value = "";
+    askGuddu();
 
   }
 
-
-  /* =========================
-     TASKS
-  ========================= */
-
-  let tasks =
-    JSON.parse(
-      localStorage.getItem("gudduTasks")
-    ) || [];
+}
 
 
-  function openTasks() {
+/* =========================
+   CHAT
+========================= */
 
-    document.getElementById(
-      "taskSection"
-    ).style.display = "block";
+function askGuddu() {
 
-    document.getElementById(
-      "financeSection"
-    ).style.display = "none";
+  const input =
+    document.getElementById("userInput");
+
+  const question =
+    input.value.trim();
+
+  if (question === "") {
 
     showMessage(
-      "🤖 Guddu: Your Tasks are ready. 📋"
+      "🤖 Guddu: Please type something first."
     );
 
-    displayTasks();
+    return;
 
   }
 
+  const q =
+    question.toLowerCase();
 
-  function addTask() {
 
-    const input =
-      document.getElementById("taskInput");
-
-    const task =
-      input.value.trim();
-
-    if (task === "") {
-
-      showMessage(
-        "🤖 Guddu: Enter a task first."
-      );
-
-      return;
-
-    }
-
-    tasks.push(task);
-
-    localStorage.setItem(
-      "gudduTasks",
-      JSON.stringify(tasks)
-    );
-
-    input.value = "";
-
-    displayTasks();
+  if (
+    q.includes("hello") ||
+    q.includes("hi") ||
+    q.includes("hey")
+  ) {
 
     showMessage(
-      "🤖 Guddu: Task added successfully! ✅"
+      "🤖 Guddu: Hello! 👋 How can I help you?"
     );
 
   }
 
+  else if (
+    q.includes("finance") ||
+    q.includes("investment") ||
+    q.includes("sip")
+  ) {
 
-  function displayTasks() {
-
-    const list =
-      document.getElementById("taskList");
-
-    list.innerHTML = "";
-
-    if (tasks.length === 0) {
-
-      list.innerHTML =
-        "<p>No tasks yet.</p>";
-
-      return;
-
-    }
-
-    tasks.forEach(
-      function(task, index) {
-
-        const item =
-          document.createElement("div");
-
-        item.className =
-          "card fund";
-
-        item.innerHTML =
-          "<span>" +
-          (index + 1) +
-          ". " +
-          task +
-          "</span>" +
-
-          "<button class='delete' onclick='deleteTask(" +
-          index +
-          ")'>Delete</button>";
-
-        list.appendChild(item);
-
-      }
-    );
+    openFinance();
 
   }
 
+  else if (
+    q.includes("task") ||
+    q.includes("reminder")
+  ) {
 
-  function deleteTask(index) {
-
-    tasks.splice(index, 1);
-
-    localStorage.setItem(
-      "gudduTasks",
-      JSON.stringify(tasks)
-    );
-
-    displayTasks();
+    openTasks();
 
   }
 
+  else if (
+    q.includes("rfq") ||
+    q.includes("rfp") ||
+    q.includes("rfi") ||
+    q.includes("procurement") ||
+    q.includes("supplier") ||
+    q.includes("contract")
+  ) {
 
-  function handleTaskEnter(event) {
-
-    if (event.key === "Enter") {
-
-      addTask();
-
-    }
+    openWork();
 
   }
 
-
-  /* =========================
-     FINANCE
-  ========================= */
-
-  let funds =
-    JSON.parse(
-      localStorage.getItem("gudduFunds")
-    ) || [];
-
-
-  function openFinance() {
-
-    document.getElementById(
-      "financeSection"
-    ).style.display = "block";
-
-    document.getElementById(
-      "taskSection"
-    ).style.display = "none";
+  else if (
+    q.includes("what can you do") ||
+    q.includes("help")
+  ) {
 
     showMessage(
-      "🤖 Guddu: Finance Dashboard is ready. 💰"
+      "🤖 Guddu can currently help with Tasks 📋, Finance 💰 and Work & Procurement 💼."
     );
-
-    displayFunds();
-
-    displayNotes();
 
   }
 
+  else {
 
-  function addFund() {
-
-    const name =
-      document.getElementById(
-        "fundName"
-      ).value.trim();
-
-    const amount =
-      Number(
-        document.getElementById(
-          "fundAmount"
-        ).value
-      );
-
-
-    if (
-      name === "" ||
-      amount <= 0
-    ) {
-
-      showMessage(
-        "🤖 Guddu: Enter a fund name and SIP amount."
-      );
-
-      return;
-
-    }
-
-
-    funds.push({
-
-      name: name,
-
-      amount: amount
-
-    });
-
-
-    localStorage.setItem(
-      "gudduFunds",
-      JSON.stringify(funds)
+    showMessage(
+      '🤖 Guddu received: "' +
+      question +
+      '"'
     );
 
+  }
 
+  input.value = "";
+
+}
+
+
+/* =========================
+   TASKS
+========================= */
+
+let tasks =
+  JSON.parse(
+    localStorage.getItem("gudduTasks")
+  ) || [];
+
+
+function openTasks() {
+
+  document.getElementById(
+    "taskSection"
+  ).style.display = "block";
+
+  document.getElementById(
+    "financeSection"
+  ).style.display = "none";
+
+  document.getElementById(
+    "workSection"
+  ).style.display = "none";
+
+  showMessage(
+    "🤖 Guddu: Your Tasks are ready. 📋"
+  );
+
+  displayTasks();
+
+}
+
+
+function addTask() {
+
+  const input =
+    document.getElementById("taskInput");
+
+  const task =
+    input.value.trim();
+
+  if (task === "") {
+
+    showMessage(
+      "🤖 Guddu: Enter a task first."
+    );
+
+    return;
+
+  }
+
+  tasks.push(task);
+
+  localStorage.setItem(
+    "gudduTasks",
+    JSON.stringify(tasks)
+  );
+
+  input.value = "";
+
+  displayTasks();
+
+  showMessage(
+    "🤖 Guddu: Task added successfully! ✅"
+  );
+
+}
+
+
+function displayTasks() {
+
+  const list =
+    document.getElementById("taskList");
+
+  list.innerHTML = "";
+
+  if (tasks.length === 0) {
+
+    list.innerHTML =
+      "<p>No tasks yet.</p>";
+
+    return;
+
+  }
+
+  tasks.forEach(
+    function(task, index) {
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "card";
+
+      item.innerHTML =
+        "<span>" +
+        (index + 1) +
+        ". " +
+        task +
+        "</span>" +
+
+        "<br><br>" +
+
+        "<button class='delete' onclick='deleteTask(" +
+        index +
+        ")'>Delete</button>";
+
+      list.appendChild(item);
+
+    }
+  );
+
+}
+
+
+function deleteTask(index) {
+
+  tasks.splice(index, 1);
+
+  localStorage.setItem(
+    "gudduTasks",
+    JSON.stringify(tasks)
+  );
+
+  displayTasks();
+
+}
+
+
+function handleTaskEnter(event) {
+
+  if (event.key === "Enter") {
+
+    addTask();
+
+  }
+
+}
+
+
+/* =========================
+   FINANCE
+========================= */
+
+let funds =
+  JSON.parse(
+    localStorage.getItem("gudduFunds")
+  ) || [];
+
+
+function openFinance() {
+
+  document.getElementById(
+    "financeSection"
+  ).style.display = "block";
+
+  document.getElementById(
+    "taskSection"
+  ).style.display = "none";
+
+  document.getElementById(
+    "workSection"
+  ).style.display = "none";
+
+  showMessage(
+    "🤖 Guddu: Finance Dashboard is ready. 💰"
+  );
+
+  displayFunds();
+
+  displayNotes();
+
+}
+
+
+function addFund() {
+
+  const name =
     document.getElementById(
       "fundName"
-    ).value = "";
+    ).value.trim();
 
-    document.getElementById(
-      "fundAmount"
-    ).value = "";
+  const amount =
+    Number(
+      document.getElementById(
+        "fundAmount"
+      ).value
+    );
 
 
-    displayFunds();
+  if (
+    name === "" ||
+    amount <= 0
+  ) {
 
     showMessage(
-      "🤖 Guddu: Fund added successfully! ✅"
+      "🤖 Guddu: Enter a fund name and SIP amount."
     );
+
+    return;
 
   }
 
 
-  function displayFunds() {
+  funds.push({
 
-    const list =
-      document.getElementById(
-        "fundList"
-      );
+    name: name,
 
-    list.innerHTML = "";
+    amount: amount
 
-    let total = 0;
+  });
 
 
-    funds.forEach(
-      function(fund, index) {
-
-        total += fund.amount;
-
-
-        const item =
-          document.createElement("div");
-
-        item.className =
-          "card fund";
+  localStorage.setItem(
+    "gudduFunds",
+    JSON.stringify(funds)
+  );
 
 
-        item.innerHTML =
-          "<span>" +
-          fund.name +
-          "<br><strong>₹" +
-          fund.amount.toLocaleString("en-IN") +
-          " / month</strong></span>" +
+  document.getElementById(
+    "fundName"
+  ).value = "";
 
-          "<button class='delete' onclick='deleteFund(" +
-          index +
-          ")'>Delete</button>";
+  document.getElementById(
+    "fundAmount"
+  ).value = "";
 
 
-        list.appendChild(item);
+  displayFunds();
 
-      }
-    );
+}
 
 
+function displayFunds() {
+
+  const list =
     document.getElementById(
-      "totalSip"
-    ).innerText =
-      "₹" +
-      total.toLocaleString("en-IN");
-
-  }
-
-
-  function deleteFund(index) {
-
-    funds.splice(index, 1);
-
-    localStorage.setItem(
-      "gudduFunds",
-      JSON.stringify(funds)
+      "fundList"
     );
 
-    displayFunds();
+  list.innerHTML = "";
 
-  }
-
-
-  /* =========================
-     SIP CALCULATOR
-  ========================= */
-
-  function calculateSIP() {
-
-    const P =
-      Number(
-        document.getElementById(
-          "sipAmount"
-        ).value
-      );
-
-    const annualRate =
-      Number(
-        document.getElementById(
-          "sipReturn"
-        ).value
-      );
-
-    const years =
-      Number(
-        document.getElementById(
-          "sipYears"
-        ).value
-      );
+  let total = 0;
 
 
-    if (
-      P <= 0 ||
-      annualRate <= 0 ||
-      years <= 0
-    ) {
+  funds.forEach(
+    function(fund, index) {
 
-      document.getElementById(
-        "sipResult"
-      ).innerText =
-        "Please enter valid values.";
+      total += fund.amount;
 
-      return;
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "card";
+
+
+      item.innerHTML =
+        "<strong>" +
+        fund.name +
+        "</strong>" +
+
+        "<br>₹" +
+        fund.amount.toLocaleString("en-IN") +
+        " / month" +
+
+        "<br><br>" +
+
+        "<button class='delete' onclick='deleteFund(" +
+        index +
+        ")'>Delete</button>";
+
+
+      list.appendChild(item);
 
     }
+  );
 
 
-    const months =
-      years * 12;
+  document.getElementById(
+    "totalSip"
+  ).innerText =
+    "₹" +
+    total.toLocaleString("en-IN");
 
-    const monthlyRate =
-      annualRate / 12 / 100;
-
-
-    const futureValue =
-      P *
-      (
-        (
-          Math.pow(
-            1 + monthlyRate,
-            months
-          ) - 1
-        ) /
-        monthlyRate
-      ) *
-      (1 + monthlyRate);
+}
 
 
-    const invested =
-      P * months;
+function deleteFund(index) {
+
+  funds.splice(index, 1);
+
+  localStorage.setItem(
+    "gudduFunds",
+    JSON.stringify(funds)
+  );
+
+  displayFunds();
+
+}
 
 
-    const profit =
-      futureValue - invested;
+/* =========================
+   SIP CALCULATOR
+========================= */
 
+function calculateSIP() {
+
+  const P =
+    Number(
+      document.getElementById(
+        "sipAmount"
+      ).value
+    );
+
+  const annualRate =
+    Number(
+      document.getElementById(
+        "sipReturn"
+      ).value
+    );
+
+  const years =
+    Number(
+      document.getElementById(
+        "sipYears"
+      ).value
+    );
+
+
+  if (
+    P <= 0 ||
+    annualRate <= 0 ||
+    years <= 0
+  ) {
 
     document.getElementById(
       "sipResult"
-    ).innerHTML =
+    ).innerText =
+      "Please enter valid values.";
 
-      "<strong>Estimated Corpus:</strong> ₹" +
-      Math.round(
-        futureValue
-      ).toLocaleString("en-IN") +
-
-      "<br><strong>Total Invested:</strong> ₹" +
-      invested.toLocaleString("en-IN") +
-
-      "<br><strong>Estimated Gain:</strong> ₹" +
-      Math.round(
-        profit
-      ).toLocaleString("en-IN");
+    return;
 
   }
 
 
-  /* =========================
-     MARKET DIP PLANNER
-  ========================= */
+  const months =
+    years * 12;
 
-  function calculateDip() {
-
-    const amount =
-      Number(
-        document.getElementById(
-          "dipAmount"
-        ).value
-      );
+  const monthlyRate =
+    annualRate / 12 / 100;
 
 
-    if (amount <= 0) {
+  const futureValue =
+    P *
+    (
+      (
+        Math.pow(
+          1 + monthlyRate,
+          months
+        ) - 1
+      ) /
+      monthlyRate
+    ) *
+    (1 + monthlyRate);
 
+
+  const invested =
+    P * months;
+
+
+  const profit =
+    futureValue - invested;
+
+
+  document.getElementById(
+    "sipResult"
+  ).innerHTML =
+
+    "<strong>Estimated Corpus:</strong> ₹" +
+    Math.round(
+      futureValue
+    ).toLocaleString("en-IN") +
+
+    "<br><strong>Total Invested:</strong> ₹" +
+    invested.toLocaleString("en-IN") +
+
+    "<br><strong>Estimated Gain:</strong> ₹" +
+    Math.round(
+      profit
+    ).toLocaleString("en-IN");
+
+}
+
+
+/* =========================
+   DIP PLANNER
+========================= */
+
+function calculateDip() {
+
+  const amount =
+    Number(
       document.getElementById(
-        "dipResult"
-      ).innerText =
-        "Enter an extra investment amount.";
-
-      return;
-
-    }
-
-
-    const plan5 =
-      amount * 0.10;
-
-    const plan10 =
-      amount * 0.20;
-
-    const plan15 =
-      amount * 0.25;
-
-    const plan20 =
-      amount * 0.25;
-
-    const plan30 =
-      amount * 0.20;
-
-
-    document.getElementById(
-      "dipResult"
-    ).innerHTML =
-
-      "<strong>Suggested Dip Plan</strong>" +
-
-      "<br>Market -5% → ₹" +
-      Math.round(plan5).toLocaleString("en-IN") +
-
-      "<br>Market -10% → ₹" +
-      Math.round(plan10).toLocaleString("en-IN") +
-
-      "<br>Market -15% → ₹" +
-      Math.round(plan15).toLocaleString("en-IN") +
-
-      "<br>Market -20% → ₹" +
-      Math.round(plan20).toLocaleString("en-IN") +
-
-      "<br>Market -30% → ₹" +
-      Math.round(plan30).toLocaleString("en-IN");
-
-  }
-
-
-  /* =========================
-     NOTES
-  ========================= */
-
-  let notes =
-    JSON.parse(
-      localStorage.getItem("gudduNotes")
-    ) || [];
-
-
-  function saveNote() {
-
-    const input =
-      document.getElementById(
-        "investmentNote"
-      );
-
-    const note =
-      input.value.trim();
-
-
-    if (note === "") {
-
-      return;
-
-    }
-
-
-    notes.push(note);
-
-
-    localStorage.setItem(
-      "gudduNotes",
-      JSON.stringify(notes)
+        "dipAmount"
+      ).value
     );
 
 
-    input.value = "";
+  if (amount <= 0) {
 
-    displayNotes();
+    return;
 
   }
 
 
-  function displayNotes() {
+  const p5 =
+    amount * 0.10;
 
-    const list =
-      document.getElementById(
-        "notesList"
-      );
+  const p10 =
+    amount * 0.20;
 
-    if (notes.length === 0) {
+  const p15 =
+    amount * 0.25;
 
-      list.innerHTML =
-        "No investment notes yet.";
+  const p20 =
+    amount * 0.25;
 
-      return;
+  const p30 =
+    amount * 0.20;
 
-    }
 
+  document.getElementById(
+    "dipResult"
+  ).innerHTML =
+
+    "<strong>Suggested Dip Plan</strong>" +
+
+    "<br>-5% → ₹" +
+    Math.round(p5).toLocaleString("en-IN") +
+
+    "<br>-10% → ₹" +
+    Math.round(p10).toLocaleString("en-IN") +
+
+    "<br>-15% → ₹" +
+    Math.round(p15).toLocaleString("en-IN") +
+
+    "<br>-20% → ₹" +
+    Math.round(p20).toLocaleString("en-IN") +
+
+    "<br>-30% → ₹" +
+    Math.round(p30).toLocaleString("en-IN");
+
+}
+
+
+/* =========================
+   NOTES
+========================= */
+
+let notes =
+  JSON.parse(
+    localStorage.getItem("gudduNotes")
+  ) || [];
+
+
+function saveNote() {
+
+  const input =
+    document.getElementById(
+      "investmentNote"
+    );
+
+  const note =
+    input.value.trim();
+
+
+  if (note === "") {
+
+    return;
+
+  }
+
+
+  notes.push(note);
+
+  localStorage.setItem(
+    "gudduNotes",
+    JSON.stringify(notes)
+  );
+
+  input.value = "";
+
+  displayNotes();
+
+}
+
+
+function displayNotes() {
+
+  const list =
+    document.getElementById(
+      "notesList"
+    );
+
+  if (notes.length === 0) {
 
     list.innerHTML =
-      notes.map(
-        function(note, index) {
+      "No investment notes yet.";
 
-          return (
-            (index + 1) +
-            ". " +
-            note
-          );
-
-        }
-      ).join("<br>");
+    return;
 
   }
 
-</script>
 
-</body>
-</html>
+  list.innerHTML =
+    notes.map(
+      function(note, index) {
+
+        return (
+          (index + 1) +
+          ". " +
+          note
+        );
+
+      }
+    ).join("<br>");
+
+}
+
+
+/* =========================
+   WORK
+========================= */
+
+function openWork() {
+
+  document.getElementById(
+    "workSection"
+  ).style.display = "block";
+
+  document.getElementById(
+    "taskSection"
+  ).style.display = "none";
+
+  document.getElementById(
+    "financeSection"
+  ).style.display = "none";
+
+  showMessage(
+    "🤖 Guddu: Work & Procurement mode is ready. 💼"
+  );
+
+}
+
+
+/* RFQ */
+
+function showRFQ() {
+
+  document.getElementById(
+    "workContent"
+  ).innerHTML = `
+
+    <h3>📋 RFQ Checklist</h3>
+
+    <p>1. Define requirement</p>
+    <p>2. Prepare specifications / SOW</p>
+    <p>3. Identify qualified suppliers</p>
+    <p>4. Issue RFQ</p>
+    <p>5. Collect quotations</p>
+    <p>6. Compare commercial terms</p>
+    <p>7. Evaluate supplier responses</p>
+    <p>8. Negotiate</p>
+    <p>9. Select supplier</p>
+    <p>10. Create PO / Contract</p>
+
+  `;
+
+}
+
+
+/* RFP */
+
+function showRFP() {
+
+  document.getElementById(
+    "workContent"
+  ).innerHTML = `
+
+    <h3>📑 RFP Checklist</h3>
+
+    <p>1. Business requirement</p>
+    <p>2. Scope of work</p>
+    <p>3. Evaluation criteria</p>
+    <p>4. Supplier shortlist</p>
+    <p>5. Issue RFP</p>
+    <p>6. Supplier Q&A</p>
+    <p>7. Proposal evaluation</p>
+    <p>8. Commercial evaluation</p>
+    <p>9. Negotiation</p>
+    <p>10. Award decision</p>
+
+  `;
+
+}
+
+
+/* RFI */
+
+function showRFI() {
+
+  document.getElementById(
+    "workContent"
+  ).innerHTML = `
+
+    <h3>🔎 RFI Purpose</h3>
+
+    <p>Use an RFI when you need market information before launching an RFQ or RFP.</p>
+
+    <p><strong>Guddu checklist:</strong></p>
+
+    <p>• Market capability</p>
+    <p>• Supplier landscape</p>
+    <p>• Available solutions</p>
+    <p>• Indicative pricing</p>
+    <p>• Technology / service capabilities</p>
+
+  `;
+
+}
+
+
+/* SUPPLIER */
+
+function showSupplier() {
+
+  document.getElementById(
+    "workContent"
+  ).innerHTML = `
+
+    <h3>🤝 Supplier Evaluation</h3>
+
+    <p>Consider:</p>
+
+    <p>• Commercial competitiveness</p>
+    <p>• Quality</p>
+    <p>• Delivery / SLA</p>
+    <p>• Financial stability</p>
+    <p>• Compliance</p>
+    <p>• Risk</p>
+    <p>• Past performance</p>
+
+  `;
+
+}
+
+
+/* CONTRACT */
+
+function showContract() {
+
+  document.getElementById(
+    "workContent"
+  ).innerHTML = `
+
+    <h3>📄 Contract Checklist</h3>
+
+    <p>• Contract owner</p>
+    <p>• Supplier</p>
+    <p>• Effective date</p>
+    <p>• Expiry date</p>
+    <p>• Renewal notice period</p>
+    <p>• Scope / SOW</p>
+    <p>• Pricing</p>
+    <p>• SLA / KPI</p>
+    <p>• Termination clause</p>
+    <p>• Data / confidentiality requirements</p>
+
+  `;
+
+}
+
+
+/* SAVINGS */
+
+function showSavings() {
+
+  document.getElementById(
+    "workContent"
+  ).innerHTML = `
+
+    <h3>💰 Savings Calculator</h3>
+
+    <input
+      type="number"
+      id="oldPrice"
+      placeholder="Original / baseline price ₹"
+    >
+
+    <input
+      type="number"
+      id="newPrice"
+      placeholder="Negotiated price ₹"
+    >
+
+    <button onclick="calculateSavings()">
+      Calculate Savings
+    </button>
+
+    <div id="savingsResult" class="result"></div>
+
+  `;
+
+}
+
+
+function calculateSavings() {
+
+  const oldPrice =
+    Number(
+      document.getElementById(
+        "oldPrice"
+      ).value
+    );
+
+  const newPrice =
+    Number(
+      document.getElementById(
+        "newPrice"
+      ).value
+    );
+
+
+  if (
+    oldPrice <= 0 ||
+    newPrice < 0
+  ) {
+
+    return;
+
+  }
+
+
+  const savings =
+    oldPrice - newPrice;
+
+  const percentage =
+    (savings / oldPrice) * 100;
+
+
+  document.getElementById(
+    "savingsResult"
+  ).innerHTML =
+
+    "<strong>Savings:</strong> ₹" +
+    savings.toLocaleString("en-IN") +
+
+    "<br><strong>Savings %:</strong> " +
+    percentage.toFixed(2) +
+    "%";
+
+}
+
+
+/* EMAIL */
+
+function showEmail() {
+
+  document.getElementById(
+    "workContent"
+  ).innerHTML = `
+
+    <h3>✉️ Supplier Email Draft</h3>
+
+    <input
+      type="text"
+      id="supplierName"
+      placeholder="Supplier name"
+    >
+
+    <input
+      type="text"
+      id="emailTopic"
+      placeholder="Subject / topic"
+    >
+
+    <button onclick="generateEmail()">
+      Generate Draft
+    </button>
+
+    <div id="emailResult" class="result"></div>
+
+  `;
+
+}
+
+
+function generateEmail() {
+
+  const supplier =
+    document.getElementById(
+      "supplierName"
+    ).value.trim();
+
+  const topic =
+    document.getElementById(
+      "emailTopic"
+    ).value.trim();
+
+
+  document.getElementById(
+    "emailResult"
+  ).innerHTML =
+
+    "<strong>Subject:</strong> " +
+    topic +
+
+    "<br><br>" +
+
+    "Dear " +
+    (supplier || "Supplier") +
+    ",<br><br>" +
+
+    "We are reaching out regarding " +
+    (topic || "the current requirement") +
+    ". Please review the details and share your response at your earliest convenience." +
+
+    "<br><br>" +
+
+    "Please let us know if you need any clarification." +
+
+    "<br><br>" +
+
+    "Regards,<br>" +
+    "Procurement Team";
+
+}
+
+
+/* CHECKLIST */
+
+function showChecklist() {
+
+  document.getElementById(
+    "workContent"
+  ).innerHTML = `
+
+    <h3>✅ Procurement Checklist</h3>
+
+    <p>☐ Requirement confirmed</p>
+    <p>☐ Budget confirmed</p>
+    <p>☐ SOW / specifications ready</p>
+    <p>☐ Supplier shortlist completed</p>
+    <p>☐ RFx issued</p>
+    <p>☐ Quotes / proposals received</p>
+    <p>☐ Evaluation completed</p>
+    <p>☐ Negotiation completed</p>
+    <p>☐ Approval obtained</p>
+    <p>☐ 
