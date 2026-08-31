@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Guddu AI</title>
 
   <style>
+
     body {
       font-family: Arial, sans-serif;
       background: #f4f7fb;
@@ -58,6 +60,7 @@
       background: #f7f7f7;
       border-radius: 12px;
       min-height: 30px;
+      line-height: 1.5;
     }
 
     .chat-box {
@@ -72,6 +75,7 @@
       border: 1px solid #ddd;
       border-radius: 10px;
       font-size: 16px;
+      box-sizing: border-box;
     }
 
     .send-button {
@@ -79,7 +83,13 @@
       color: white;
       padding: 14px 18px;
     }
+
+    .send-button:hover {
+      background: #444;
+    }
+
   </style>
+
 </head>
 
 <body>
@@ -91,6 +101,7 @@
     <p class="subtitle">
       Your Personal AI Assistant
     </p>
+
 
     <div class="buttons">
 
@@ -120,9 +131,11 @@
 
     </div>
 
+
     <div id="message">
-      👋 Hello! I am Guddu. Choose an option above.
+      👋 Hello! I am Guddu. Choose an option above or type a message below.
     </div>
+
 
     <div class="chat-box">
 
@@ -130,9 +143,13 @@
         type="text"
         id="userInput"
         placeholder="Ask Guddu anything..."
+        onkeydown="handleEnter(event)"
       >
 
-      <button class="send-button" onclick="askGuddu()">
+      <button
+        class="send-button"
+        onclick="askGuddu()"
+      >
         Send
       </button>
 
@@ -140,31 +157,146 @@
 
   </div>
 
+
   <script>
 
     function showMessage(text) {
+
       document.getElementById("message").innerText = text;
+
     }
+
+
+    function handleEnter(event) {
+
+      if (event.key === "Enter") {
+
+        askGuddu();
+
+      }
+
+    }
+
 
     function askGuddu() {
 
-      const input = document.getElementById("userInput");
-      const message = document.getElementById("message");
+      const input =
+        document.getElementById("userInput");
 
-      const question = input.value.trim();
+      const message =
+        document.getElementById("message");
+
+      const question =
+        input.value.trim();
+
 
       if (question === "") {
+
         message.innerText =
           "🤖 Guddu: Please type something first.";
+
         return;
+
       }
 
-      message.innerText =
-        '🤖 Guddu: I received your message — "' +
-        question +
-        '"';
+
+      const q =
+        question.toLowerCase();
+
+
+      if (
+        q.includes("hello") ||
+        q.includes("hi") ||
+        q.includes("hey")
+      ) {
+
+        message.innerText =
+          "🤖 Guddu: Hello! 👋 I am Guddu. How can I help you today?";
+
+      }
+
+
+      else if (
+        q.includes("what can you do") ||
+        q.includes("help")
+      ) {
+
+        message.innerText =
+          "🤖 Guddu can help with Tasks 📋, Finance 💰, Work 💼, Documents 📄, Research 🔎 and Voice 🎙️.";
+
+      }
+
+
+      else if (
+        q.includes("task") ||
+        q.includes("reminder")
+      ) {
+
+        message.innerText =
+          "🤖 Guddu: Tasks & Reminders 📋 are ready. Tell me what task you want to add.";
+
+      }
+
+
+      else if (
+        q.includes("finance") ||
+        q.includes("investment") ||
+        q.includes("money")
+      ) {
+
+        message.innerText =
+          "🤖 Guddu: Finance mode 💰 is ready. I can help organize your financial information.";
+
+      }
+
+
+      else if (
+        q.includes("work") ||
+        q.includes("procurement") ||
+        q.includes("supplier") ||
+        q.includes("purchase")
+      ) {
+
+        message.innerText =
+          "🤖 Guddu: Work & Procurement mode 💼 is ready. Tell me what you need.";
+
+      }
+
+
+      else if (
+        q.includes("document") ||
+        q.includes("contract")
+      ) {
+
+        message.innerText =
+          "🤖 Guddu: Documents mode 📄 is ready. I can help you organize documents and contracts.";
+
+      }
+
+
+      else if (
+        q.includes("research") ||
+        q.includes("search")
+      ) {
+
+        message.innerText =
+          "🤖 Guddu: Research mode 🔎 is ready. Tell me what you want to research.";
+
+      }
+
+
+      else {
+
+        message.innerText =
+          "🤖 Guddu: I received your message — \"" +
+          question +
+          "\". My advanced AI brain is coming next! 🧠";
+
+      }
+
 
       input.value = "";
+
     }
 
   </script>
