@@ -71,9 +71,7 @@
       font-size: 20px;
     }
 
-    input,
-    textarea,
-    select {
+    input {
       width: 100%;
       box-sizing: border-box;
       padding: 12px;
@@ -81,11 +79,6 @@
       border: 1px solid #ddd;
       border-radius: 9px;
       font-size: 15px;
-    }
-
-    textarea {
-      min-height: 100px;
-      resize: vertical;
     }
 
     .chat-box {
@@ -128,17 +121,6 @@
       line-height: 1.6;
     }
 
-    .work-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .work-buttons button {
-      font-size: 14px;
-      padding: 12px;
-    }
-
   </style>
 
 </head>
@@ -154,8 +136,6 @@
   </p>
 
 
-  <!-- MAIN BUTTONS -->
-
   <div class="buttons">
 
     <button onclick="openTasks()">
@@ -166,33 +146,29 @@
       💰 Finance
     </button>
 
-    <button onclick="openWork()">
+    <button onclick="showMessage('💼 Work & Procurement mode is coming next.')">
       💼 Work
     </button>
 
-    <button onclick="showMessage('📄 Documents module coming next.')">
+    <button onclick="showMessage('📄 Documents mode is coming next.')">
       📄 Documents
     </button>
 
-    <button onclick="showMessage('🔎 Research module coming next.')">
+    <button onclick="showMessage('🔎 Research mode is coming next.')">
       🔎 Research
     </button>
 
-    <button onclick="showMessage('🎙️ Voice Assistant coming next.')">
+    <button onclick="showMessage('🎙️ Voice Assistant is coming next.')">
       🎙️ Voice
     </button>
 
   </div>
 
 
-  <!-- MESSAGE -->
-
   <div id="message">
     👋 Hello! I am Guddu. Choose an option or ask me something.
   </div>
 
-
-  <!-- CHAT -->
 
   <div class="chat-box">
 
@@ -304,22 +280,32 @@
       Calculate
     </button>
 
-    <div id="sipResult" class="result"></div>
+    <div
+      id="sipResult"
+      class="result"
+    ></div>
 
 
     <h3>📉 Market Dip Planner</h3>
 
+    <p>
+      Enter your available extra investment amount.
+    </p>
+
     <input
       type="number"
       id="dipAmount"
-      placeholder="Extra investment amount ₹"
+      placeholder="Extra amount ₹"
     >
 
     <button onclick="calculateDip()">
       Create Dip Plan
     </button>
 
-    <div id="dipResult" class="result"></div>
+    <div
+      id="dipResult"
+      class="result"
+    ></div>
 
 
     <h3>📝 Investment Notes</h3>
@@ -327,70 +313,17 @@
     <input
       type="text"
       id="investmentNote"
-      placeholder="Investment note"
+      placeholder="Example: Review portfolio every 6 months"
     >
 
     <button onclick="saveNote()">
       Save Note
     </button>
 
-    <div id="notesList" class="result"></div>
-
-  </div>
-
-
-  <!-- WORK -->
-
-  <div
-    id="workSection"
-    class="section"
-    style="display:none;"
-  >
-
-    <h2>💼 Work & Procurement</h2>
-
-    <div class="work-buttons">
-
-      <button onclick="showRFQ()">
-        📋 RFQ
-      </button>
-
-      <button onclick="showRFP()">
-        📑 RFP
-      </button>
-
-      <button onclick="showRFI()">
-        🔎 RFI
-      </button>
-
-      <button onclick="showSupplier()">
-        🤝 Supplier
-      </button>
-
-      <button onclick="showContract()">
-        📄 Contract
-      </button>
-
-      <button onclick="showSavings()">
-        💰 Savings
-      </button>
-
-      <button onclick="showEmail()">
-        ✉️ Email
-      </button>
-
-      <button onclick="showChecklist()">
-        ✅ Checklist
-      </button>
-
-    </div>
-
-
-    <div id="workContent" class="result">
-
-      Select a Work & Procurement option above.
-
-    </div>
+    <div
+      id="notesList"
+      class="result"
+    ></div>
 
   </div>
 
@@ -400,9 +333,7 @@
 <script>
 
 
-/* =========================
-   GENERAL
-========================= */
+/* GENERAL */
 
 function showMessage(text) {
 
@@ -422,27 +353,29 @@ function handleEnter(event) {
 }
 
 
-/* =========================
-   CHAT
-========================= */
+/* CHAT */
 
 function askGuddu() {
 
   const input =
     document.getElementById("userInput");
 
+  const message =
+    document.getElementById("message");
+
   const question =
     input.value.trim();
 
+
   if (question === "") {
 
-    showMessage(
-      "🤖 Guddu: Please type something first."
-    );
+    message.innerText =
+      "🤖 Guddu: Please type something first.";
 
     return;
 
   }
+
 
   const q =
     question.toLowerCase();
@@ -454,11 +387,11 @@ function askGuddu() {
     q.includes("hey")
   ) {
 
-    showMessage(
-      "🤖 Guddu: Hello! 👋 How can I help you?"
-    );
+    message.innerText =
+      "🤖 Guddu: Hello! 👋 How can I help you?";
 
   }
+
 
   else if (
     q.includes("finance") ||
@@ -470,6 +403,7 @@ function askGuddu() {
 
   }
 
+
   else if (
     q.includes("task") ||
     q.includes("reminder")
@@ -479,48 +413,34 @@ function askGuddu() {
 
   }
 
-  else if (
-    q.includes("rfq") ||
-    q.includes("rfp") ||
-    q.includes("rfi") ||
-    q.includes("procurement") ||
-    q.includes("supplier") ||
-    q.includes("contract")
-  ) {
-
-    openWork();
-
-  }
 
   else if (
     q.includes("what can you do") ||
     q.includes("help")
   ) {
 
-    showMessage(
-      "🤖 Guddu can currently help with Tasks 📋, Finance 💰 and Work & Procurement 💼."
-    );
+    message.innerText =
+      "🤖 Guddu can currently manage Tasks 📋 and Finance 💰.";
 
   }
+
 
   else {
 
-    showMessage(
+    message.innerText =
       '🤖 Guddu received: "' +
       question +
-      '"'
-    );
+      '"';
 
   }
+
 
   input.value = "";
 
 }
 
 
-/* =========================
-   TASKS
-========================= */
+/* TASKS */
 
 let tasks =
   JSON.parse(
@@ -536,10 +456,6 @@ function openTasks() {
 
   document.getElementById(
     "financeSection"
-  ).style.display = "none";
-
-  document.getElementById(
-    "workSection"
   ).style.display = "none";
 
   showMessage(
@@ -559,6 +475,7 @@ function addTask() {
   const task =
     input.value.trim();
 
+
   if (task === "") {
 
     showMessage(
@@ -569,12 +486,15 @@ function addTask() {
 
   }
 
+
   tasks.push(task);
+
 
   localStorage.setItem(
     "gudduTasks",
     JSON.stringify(tasks)
   );
+
 
   input.value = "";
 
@@ -594,6 +514,7 @@ function displayTasks() {
 
   list.innerHTML = "";
 
+
   if (tasks.length === 0) {
 
     list.innerHTML =
@@ -603,6 +524,7 @@ function displayTasks() {
 
   }
 
+
   tasks.forEach(
     function(task, index) {
 
@@ -611,6 +533,7 @@ function displayTasks() {
 
       item.className =
         "card";
+
 
       item.innerHTML =
         "<span>" +
@@ -625,6 +548,7 @@ function displayTasks() {
         index +
         ")'>Delete</button>";
 
+
       list.appendChild(item);
 
     }
@@ -637,10 +561,12 @@ function deleteTask(index) {
 
   tasks.splice(index, 1);
 
+
   localStorage.setItem(
     "gudduTasks",
     JSON.stringify(tasks)
   );
+
 
   displayTasks();
 
@@ -658,9 +584,7 @@ function handleTaskEnter(event) {
 }
 
 
-/* =========================
-   FINANCE
-========================= */
+/* FINANCE */
 
 let funds =
   JSON.parse(
@@ -678,13 +602,11 @@ function openFinance() {
     "taskSection"
   ).style.display = "none";
 
-  document.getElementById(
-    "workSection"
-  ).style.display = "none";
 
   showMessage(
     "🤖 Guddu: Finance Dashboard is ready. 💰"
   );
+
 
   displayFunds();
 
@@ -699,6 +621,7 @@ function addFund() {
     document.getElementById(
       "fundName"
     ).value.trim();
+
 
   const amount =
     Number(
@@ -741,12 +664,18 @@ function addFund() {
     "fundName"
   ).value = "";
 
+
   document.getElementById(
     "fundAmount"
   ).value = "";
 
 
   displayFunds();
+
+
+  showMessage(
+    "🤖 Guddu: Fund added successfully! ✅"
+  );
 
 }
 
@@ -758,7 +687,9 @@ function displayFunds() {
       "fundList"
     );
 
+
   list.innerHTML = "";
+
 
   let total = 0;
 
@@ -771,6 +702,7 @@ function displayFunds() {
 
       const item =
         document.createElement("div");
+
 
       item.className =
         "card";
@@ -811,19 +743,19 @@ function deleteFund(index) {
 
   funds.splice(index, 1);
 
+
   localStorage.setItem(
     "gudduFunds",
     JSON.stringify(funds)
   );
+
 
   displayFunds();
 
 }
 
 
-/* =========================
-   SIP CALCULATOR
-========================= */
+/* SIP CALCULATOR */
 
 function calculateSIP() {
 
@@ -834,12 +766,14 @@ function calculateSIP() {
       ).value
     );
 
+
   const annualRate =
     Number(
       document.getElementById(
         "sipReturn"
       ).value
     );
+
 
   const years =
     Number(
@@ -867,6 +801,7 @@ function calculateSIP() {
 
   const months =
     years * 12;
+
 
   const monthlyRate =
     annualRate / 12 / 100;
@@ -914,9 +849,7 @@ function calculateSIP() {
 }
 
 
-/* =========================
-   DIP PLANNER
-========================= */
+/* MARKET DIP */
 
 function calculateDip() {
 
@@ -930,6 +863,11 @@ function calculateDip() {
 
   if (amount <= 0) {
 
+    document.getElementById(
+      "dipResult"
+    ).innerText =
+      "Enter an amount first.";
+
     return;
 
   }
@@ -938,14 +876,18 @@ function calculateDip() {
   const p5 =
     amount * 0.10;
 
+
   const p10 =
     amount * 0.20;
+
 
   const p15 =
     amount * 0.25;
 
+
   const p20 =
     amount * 0.25;
+
 
   const p30 =
     amount * 0.20;
@@ -957,27 +899,25 @@ function calculateDip() {
 
     "<strong>Suggested Dip Plan</strong>" +
 
-    "<br>-5% → ₹" +
+    "<br>Market -5% → ₹" +
     Math.round(p5).toLocaleString("en-IN") +
 
-    "<br>-10% → ₹" +
+    "<br>Market -10% → ₹" +
     Math.round(p10).toLocaleString("en-IN") +
 
-    "<br>-15% → ₹" +
+    "<br>Market -15% → ₹" +
     Math.round(p15).toLocaleString("en-IN") +
 
-    "<br>-20% → ₹" +
+    "<br>Market -20% → ₹" +
     Math.round(p20).toLocaleString("en-IN") +
 
-    "<br>-30% → ₹" +
+    "<br>Market -30% → ₹" +
     Math.round(p30).toLocaleString("en-IN");
 
 }
 
 
-/* =========================
-   NOTES
-========================= */
+/* NOTES */
 
 let notes =
   JSON.parse(
@@ -992,6 +932,7 @@ function saveNote() {
       "investmentNote"
     );
 
+
   const note =
     input.value.trim();
 
@@ -1005,12 +946,15 @@ function saveNote() {
 
   notes.push(note);
 
+
   localStorage.setItem(
     "gudduNotes",
     JSON.stringify(notes)
   );
 
+
   input.value = "";
+
 
   displayNotes();
 
@@ -1023,6 +967,7 @@ function displayNotes() {
     document.getElementById(
       "notesList"
     );
+
 
   if (notes.length === 0) {
 
@@ -1049,333 +994,7 @@ function displayNotes() {
 
 }
 
+</script>
 
-/* =========================
-   WORK
-========================= */
-
-function openWork() {
-
-  document.getElementById(
-    "workSection"
-  ).style.display = "block";
-
-  document.getElementById(
-    "taskSection"
-  ).style.display = "none";
-
-  document.getElementById(
-    "financeSection"
-  ).style.display = "none";
-
-  showMessage(
-    "🤖 Guddu: Work & Procurement mode is ready. 💼"
-  );
-
-}
-
-
-/* RFQ */
-
-function showRFQ() {
-
-  document.getElementById(
-    "workContent"
-  ).innerHTML = `
-
-    <h3>📋 RFQ Checklist</h3>
-
-    <p>1. Define requirement</p>
-    <p>2. Prepare specifications / SOW</p>
-    <p>3. Identify qualified suppliers</p>
-    <p>4. Issue RFQ</p>
-    <p>5. Collect quotations</p>
-    <p>6. Compare commercial terms</p>
-    <p>7. Evaluate supplier responses</p>
-    <p>8. Negotiate</p>
-    <p>9. Select supplier</p>
-    <p>10. Create PO / Contract</p>
-
-  `;
-
-}
-
-
-/* RFP */
-
-function showRFP() {
-
-  document.getElementById(
-    "workContent"
-  ).innerHTML = `
-
-    <h3>📑 RFP Checklist</h3>
-
-    <p>1. Business requirement</p>
-    <p>2. Scope of work</p>
-    <p>3. Evaluation criteria</p>
-    <p>4. Supplier shortlist</p>
-    <p>5. Issue RFP</p>
-    <p>6. Supplier Q&A</p>
-    <p>7. Proposal evaluation</p>
-    <p>8. Commercial evaluation</p>
-    <p>9. Negotiation</p>
-    <p>10. Award decision</p>
-
-  `;
-
-}
-
-
-/* RFI */
-
-function showRFI() {
-
-  document.getElementById(
-    "workContent"
-  ).innerHTML = `
-
-    <h3>🔎 RFI Purpose</h3>
-
-    <p>Use an RFI when you need market information before launching an RFQ or RFP.</p>
-
-    <p><strong>Guddu checklist:</strong></p>
-
-    <p>• Market capability</p>
-    <p>• Supplier landscape</p>
-    <p>• Available solutions</p>
-    <p>• Indicative pricing</p>
-    <p>• Technology / service capabilities</p>
-
-  `;
-
-}
-
-
-/* SUPPLIER */
-
-function showSupplier() {
-
-  document.getElementById(
-    "workContent"
-  ).innerHTML = `
-
-    <h3>🤝 Supplier Evaluation</h3>
-
-    <p>Consider:</p>
-
-    <p>• Commercial competitiveness</p>
-    <p>• Quality</p>
-    <p>• Delivery / SLA</p>
-    <p>• Financial stability</p>
-    <p>• Compliance</p>
-    <p>• Risk</p>
-    <p>• Past performance</p>
-
-  `;
-
-}
-
-
-/* CONTRACT */
-
-function showContract() {
-
-  document.getElementById(
-    "workContent"
-  ).innerHTML = `
-
-    <h3>📄 Contract Checklist</h3>
-
-    <p>• Contract owner</p>
-    <p>• Supplier</p>
-    <p>• Effective date</p>
-    <p>• Expiry date</p>
-    <p>• Renewal notice period</p>
-    <p>• Scope / SOW</p>
-    <p>• Pricing</p>
-    <p>• SLA / KPI</p>
-    <p>• Termination clause</p>
-    <p>• Data / confidentiality requirements</p>
-
-  `;
-
-}
-
-
-/* SAVINGS */
-
-function showSavings() {
-
-  document.getElementById(
-    "workContent"
-  ).innerHTML = `
-
-    <h3>💰 Savings Calculator</h3>
-
-    <input
-      type="number"
-      id="oldPrice"
-      placeholder="Original / baseline price ₹"
-    >
-
-    <input
-      type="number"
-      id="newPrice"
-      placeholder="Negotiated price ₹"
-    >
-
-    <button onclick="calculateSavings()">
-      Calculate Savings
-    </button>
-
-    <div id="savingsResult" class="result"></div>
-
-  `;
-
-}
-
-
-function calculateSavings() {
-
-  const oldPrice =
-    Number(
-      document.getElementById(
-        "oldPrice"
-      ).value
-    );
-
-  const newPrice =
-    Number(
-      document.getElementById(
-        "newPrice"
-      ).value
-    );
-
-
-  if (
-    oldPrice <= 0 ||
-    newPrice < 0
-  ) {
-
-    return;
-
-  }
-
-
-  const savings =
-    oldPrice - newPrice;
-
-  const percentage =
-    (savings / oldPrice) * 100;
-
-
-  document.getElementById(
-    "savingsResult"
-  ).innerHTML =
-
-    "<strong>Savings:</strong> ₹" +
-    savings.toLocaleString("en-IN") +
-
-    "<br><strong>Savings %:</strong> " +
-    percentage.toFixed(2) +
-    "%";
-
-}
-
-
-/* EMAIL */
-
-function showEmail() {
-
-  document.getElementById(
-    "workContent"
-  ).innerHTML = `
-
-    <h3>✉️ Supplier Email Draft</h3>
-
-    <input
-      type="text"
-      id="supplierName"
-      placeholder="Supplier name"
-    >
-
-    <input
-      type="text"
-      id="emailTopic"
-      placeholder="Subject / topic"
-    >
-
-    <button onclick="generateEmail()">
-      Generate Draft
-    </button>
-
-    <div id="emailResult" class="result"></div>
-
-  `;
-
-}
-
-
-function generateEmail() {
-
-  const supplier =
-    document.getElementById(
-      "supplierName"
-    ).value.trim();
-
-  const topic =
-    document.getElementById(
-      "emailTopic"
-    ).value.trim();
-
-
-  document.getElementById(
-    "emailResult"
-  ).innerHTML =
-
-    "<strong>Subject:</strong> " +
-    topic +
-
-    "<br><br>" +
-
-    "Dear " +
-    (supplier || "Supplier") +
-    ",<br><br>" +
-
-    "We are reaching out regarding " +
-    (topic || "the current requirement") +
-    ". Please review the details and share your response at your earliest convenience." +
-
-    "<br><br>" +
-
-    "Please let us know if you need any clarification." +
-
-    "<br><br>" +
-
-    "Regards,<br>" +
-    "Procurement Team";
-
-}
-
-
-/* CHECKLIST */
-
-function showChecklist() {
-
-  document.getElementById(
-    "workContent"
-  ).innerHTML = `
-
-    <h3>✅ Procurement Checklist</h3>
-
-    <p>☐ Requirement confirmed</p>
-    <p>☐ Budget confirmed</p>
-    <p>☐ SOW / specifications ready</p>
-    <p>☐ Supplier shortlist completed</p>
-    <p>☐ RFx issued</p>
-    <p>☐ Quotes / proposals received</p>
-    <p>☐ Evaluation completed</p>
-    <p>☐ Negotiation completed</p>
-    <p>☐ Approval obtained</p>
-    <p>☐ 
+</body>
+</html>
