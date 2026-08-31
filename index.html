@@ -59,6 +59,26 @@
       border-radius: 12px;
       min-height: 30px;
     }
+
+    .chat-box {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .chat-box input {
+      flex: 1;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    .send-button {
+      background: #222;
+      color: white;
+      padding: 14px 18px;
+    }
   </style>
 </head>
 
@@ -103,35 +123,51 @@
     <div id="message">
       👋 Hello! I am Guddu. Choose an option above.
     </div>
-    <div style="display:flex; gap:10px; margin-top:15px;">
-  <input
-    type="text"
-    id="userInput"
-    placeholder="Ask Guddu anything..."
-    style="flex:1; padding:14px; border:1px solid #ddd; border-radius:10px; font-size:16px;"
-  >
 
-  <button onclick="askGuddu()"
-    style="background:#222; color:white; padding:14px 18px; border-radius:10px;">
-    Send
+    <div class="chat-box">
+
+      <input
+        type="text"
+        id="userInput"
+        placeholder="Ask Guddu anything..."
+      >
+
+      <button class="send-button" onclick="askGuddu()">
+        Send
+      </button>
+
+    </div>
+
+  </div>
+
   <script>
-  function showMessage(text) {
-    document.getElementById("message").innerText = text;
-  }
 
-  function askGuddu() {
-    const input = document.getElementById("userInput");
-    const message = document.getElementById("message");
-    const question = input.value.trim();
-
-    if (question === "") {
-      message.innerText = "🤖 Guddu: Please type something first.";
-      return;
+    function showMessage(text) {
+      document.getElementById("message").innerText = text;
     }
 
-    message.innerText =
-      "🤖 Guddu: I received your message — \"" + question + "\"";
+    function askGuddu() {
 
-    input.value = "";
-  }
+      const input = document.getElementById("userInput");
+      const message = document.getElementById("message");
+
+      const question = input.value.trim();
+
+      if (question === "") {
+        message.innerText =
+          "🤖 Guddu: Please type something first.";
+        return;
+      }
+
+      message.innerText =
+        '🤖 Guddu: I received your message — "' +
+        question +
+        '"';
+
+      input.value = "";
+    }
+
   </script>
+
+</body>
+</html>
