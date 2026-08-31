@@ -4,32 +4,113 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guddu AI</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    button {
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background: #eef3ff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #dce7ff;
+    }
+
+    #message {
+      margin-top: 25px;
+      padding: 15px;
+      background: #f7f7f7;
+      border-radius: 12px;
+      min-height: 30px;
+    }
+  </style>
 </head>
 
 <body>
 
-  <h1>🤖 Guddu</h1>
+  <div class="container">
 
-  <p>Your Personal AI Assistant</p>
+    <h1>🤖 Guddu</h1>
 
-  <hr>
+    <p class="subtitle">
+      Your Personal AI Assistant
+    </p>
 
-  <h2>What can I help you with?</h2>
+    <div class="buttons">
 
-  <button>🧑‍💼 Work & Procurement</button>
-  <button>📋 Tasks & Reminders</button>
-  <button>💰 Finance & Investments</button>
-  <button>📄 Documents & Research</button>
+      <button onclick="showMessage('📋 Tasks & Reminders')">
+        📋 Tasks
+      </button>
 
-  <br><br>
+      <button onclick="showMessage('💰 Finance & Investments')">
+        💰 Finance
+      </button>
 
-  <input type="text" placeholder="Ask Guddu anything..." />
+      <button onclick="showMessage('💼 Work & Procurement')">
+        💼 Work
+      </button>
 
-  <button>Send</button>
+      <button onclick="showMessage('📄 Documents')">
+        📄 Documents
+      </button>
 
-  <hr>
+      <button onclick="showMessage('🔎 Research Assistant')">
+        🔎 Research
+      </button>
 
-  <p>🚀 Guddu is under development</p>
+      <button onclick="showMessage('🎙️ Voice Assistant coming soon')">
+        🎙️ Voice
+      </button>
+
+    </div>
+
+    <div id="message">
+      👋 Hello! I am Guddu. Choose an option above.
+    </div>
+
+  </div>
+
+  <script>
+    function showMessage(text) {
+      document.getElementById("message").innerText = text;
+    }
+  </script>
 
 </body>
 </html>
