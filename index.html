@@ -84,8 +84,38 @@
       padding: 14px 18px;
     }
 
-    .send-button:hover {
-      background: #444;
+    .task-section {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f9fafc;
+      border-radius: 15px;
+    }
+
+    .task-input {
+      width: 100%;
+      padding: 12px;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
+    .task-item {
+      background: white;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.06);
+    }
+
+    .delete-button {
+      background: #ffe5e5;
+      padding: 8px 10px;
+      font-size: 13px;
     }
 
   </style>
@@ -105,7 +135,7 @@
 
     <div class="buttons">
 
-      <button onclick="showMessage('📋 Tasks & Reminders')">
+      <button onclick="openTasks()">
         📋 Tasks
       </button>
 
@@ -155,14 +185,191 @@
 
     </div>
 
+
+    <div id="taskSection" class="task-section" style="display:none;">
+
+      <h3>📋 My Tasks</h3>
+
+      <input
+        type="text"
+        id="taskInput"
+        class="task-input"
+        placeholder="Enter a task..."
+        onkeydown="handleTaskEnter(event)"
+      >
+
+      <button onclick="addTask()">
+        ➕ Add Task
+      </button>
+
+      <div id="taskList"></div>
+
+    </div>
+
   </div>
 
 
   <script>
 
+    let tasks =
+      JSON.parse(localStorage.getItem("gudduTasks")) || [];
+
+
     function showMessage(text) {
 
       document.getElementById("message").innerText = text;
+
+    }
+
+
+    function openTasks() {
+
+      const section =
+        document.getElementById("taskSection");
+
+      section.style.display = "block";
+
+      showMessage(
+        "🤖 Guddu: Your Tasks & Reminders are ready. 📋"
+      );
+
+      displayTasks();
+
+    }
+
+
+    function addTask() {
+
+      const input =
+        document.getElementById("taskInput");
+
+      const task =
+        input.value.trim();
+
+
+      if (task === "") {
+
+        showMessage(
+          "🤖 Guddu: Please enter a task."
+        );
+
+        return;
+
+      }
+
+
+      tasks.push({
+        text: task,
+        completed: false
+      });
+
+
+      saveTasks();
+
+      input.value = "";
+
+      displayTasks();
+
+      showMessage(
+        "🤖 Guddu: Task added successfully! ✅"
+      );
+
+    }
+
+
+    function displayTasks() {
+
+      const list =
+        document.getElementById("taskList");
+
+      list.innerHTML = "";
+
+
+      if (tasks.length === 0) {
+
+        list.innerHTML =
+          "<p>No tasks yet. Add your first task! 😊</p>";
+
+        return;
+
+      }
+
+
+      tasks.forEach(function(task, index) {
+
+        const item =
+          document.createElement("div");
+
+        item.className = "task-item";
+
+
+        const text =
+          document.createElement("span");
+
+        text.innerText =
+          (index + 1) + ". " + task.text;
+
+
+        const deleteButton =
+          document.createElement("button");
+
+        deleteButton.className =
+          "delete-button";
+
+        deleteButton.innerText =
+          "Delete";
+
+        deleteButton.onclick =
+          function() {
+
+            deleteTask(index);
+
+          };
+
+
+        item.appendChild(text);
+
+        item.appendChild(deleteButton);
+
+        list.appendChild(item);
+
+      });
+
+    }
+
+
+    function deleteTask(index) {
+
+      tasks.splice(index, 1);
+
+      saveTasks();
+
+      displayTasks();
+
+      showMessage(
+        "🤖 Guddu: Task deleted. 🗑️"
+      );
+
+    }
+
+
+    function saveTasks() {
+
+      localStorage.setItem(
+        "gudduTasks",
+        JSON.stringify(tasks)
+      );
+
+    }
+
+
+    function handleTaskEnter(event) {
+
+      if (event.key === "Enter") {
+
+        addTask();
+
+      }
 
     }
 
@@ -211,7 +418,7 @@
       ) {
 
         message.innerText =
-          "🤖 Guddu: Hello! 👋 I am Guddu. How can I help you today?";
+          "🤖 Guddu: Hello! 👋 How can I help you today?";
 
       }
 
@@ -232,8 +439,7 @@
         q.includes("reminder")
       ) {
 
-        message.innerText =
-          "🤖 Guddu: Tasks & Reminders 📋 are ready. Tell me what task you want to add.";
+        openTasks();
 
       }
 
@@ -245,7 +451,7 @@
       ) {
 
         message.innerText =
-          "🤖 Guddu: Finance mode 💰 is ready. I can help organize your financial information.";
+          "🤖 Guddu: Finance mode 💰 is ready.";
 
       }
 
@@ -258,7 +464,7 @@
       ) {
 
         message.innerText =
-          "🤖 Guddu: Work & Procurement mode 💼 is ready. Tell me what you need.";
+          "🤖 Guddu: Work & Procurement mode 💼 is ready.";
 
       }
 
@@ -269,7 +475,7 @@
       ) {
 
         message.innerText =
-          "🤖 Guddu: Documents mode 📄 is ready. I can help you organize documents and contracts.";
+          "🤖 Guddu: Documents mode 📄 is ready.";
 
       }
 
@@ -280,7 +486,7 @@
       ) {
 
         message.innerText =
-          "🤖 Guddu: Research mode 🔎 is ready. Tell me what you want to research.";
+          "🤖 Guddu: Research mode 🔎 is ready.";
 
       }
 
@@ -288,9 +494,9 @@
       else {
 
         message.innerText =
-          "🤖 Guddu: I received your message — \"" +
+          '🤖 Guddu: I received your message — "' +
           question +
-          "\". My advanced AI brain is coming next! 🧠";
+          '"';
 
       }
 
