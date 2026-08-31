@@ -12,14 +12,14 @@
       font-family: Arial, sans-serif;
       background: #f4f7fb;
       margin: 0;
-      padding: 20px;
+      padding: 15px;
     }
 
     .container {
       max-width: 700px;
       margin: auto;
       background: white;
-      padding: 25px;
+      padding: 20px;
       border-radius: 20px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
@@ -32,21 +32,21 @@
     .subtitle {
       text-align: center;
       color: #666;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     .buttons {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
     button {
-      padding: 15px;
+      padding: 14px;
       border: none;
       border-radius: 12px;
       background: #eef3ff;
-      font-size: 16px;
+      font-size: 15px;
       cursor: pointer;
     }
 
@@ -54,68 +54,78 @@
       background: #dce7ff;
     }
 
-    #message {
-      margin-top: 25px;
+    .primary {
+      background: #222;
+      color: white;
+    }
+
+    .section {
+      margin-top: 20px;
       padding: 15px;
-      background: #f7f7f7;
-      border-radius: 12px;
-      min-height: 30px;
-      line-height: 1.5;
+      background: #f8f9fc;
+      border-radius: 15px;
+    }
+
+    .section h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      margin: 6px 0;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      font-size: 15px;
     }
 
     .chat-box {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       margin-top: 15px;
     }
 
     .chat-box input {
-      flex: 1;
-      padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 16px;
-      box-sizing: border-box;
+      margin: 0;
     }
 
-    .send-button {
-      background: #222;
-      color: white;
-      padding: 14px 18px;
-    }
-
-    .task-section {
+    #message {
       margin-top: 20px;
-      padding: 15px;
-      background: #f9fafc;
-      border-radius: 15px;
+      padding: 14px;
+      background: #f1f3f6;
+      border-radius: 12px;
+      line-height: 1.5;
     }
 
-    .task-input {
-      width: 100%;
-      padding: 12px;
-      box-sizing: border-box;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      font-size: 15px;
-    }
-
-    .task-item {
+    .card {
       background: white;
-      padding: 12px;
-      margin-top: 8px;
-      border-radius: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding: 14px;
+      margin-top: 10px;
+      border-radius: 12px;
       box-shadow: 0 1px 5px rgba(0,0,0,0.06);
     }
 
-    .delete-button {
+    .fund {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .delete {
       background: #ffe5e5;
-      padding: 8px 10px;
-      font-size: 13px;
+      padding: 8px;
+      font-size: 12px;
+    }
+
+    .result {
+      margin-top: 12px;
+      padding: 12px;
+      background: white;
+      border-radius: 10px;
+      line-height: 1.6;
     }
 
   </style>
@@ -124,388 +134,863 @@
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <h1>🤖 Guddu</h1>
+  <h1>🤖 Guddu</h1>
 
-    <p class="subtitle">
-      Your Personal AI Assistant
-    </p>
-
-
-    <div class="buttons">
-
-      <button onclick="openTasks()">
-        📋 Tasks
-      </button>
-
-      <button onclick="showMessage('💰 Finance & Investments')">
-        💰 Finance
-      </button>
-
-      <button onclick="showMessage('💼 Work & Procurement')">
-        💼 Work
-      </button>
-
-      <button onclick="showMessage('📄 Documents')">
-        📄 Documents
-      </button>
-
-      <button onclick="showMessage('🔎 Research Assistant')">
-        🔎 Research
-      </button>
-
-      <button onclick="showMessage('🎙️ Voice Assistant coming soon')">
-        🎙️ Voice
-      </button>
-
-    </div>
+  <p class="subtitle">
+    Your Personal AI Assistant
+  </p>
 
 
-    <div id="message">
-      👋 Hello! I am Guddu. Choose an option above or type a message below.
-    </div>
+  <!-- MAIN BUTTONS -->
 
+  <div class="buttons">
 
-    <div class="chat-box">
+    <button onclick="openTasks()">
+      📋 Tasks
+    </button>
 
-      <input
-        type="text"
-        id="userInput"
-        placeholder="Ask Guddu anything..."
-        onkeydown="handleEnter(event)"
-      >
+    <button onclick="openFinance()">
+      💰 Finance
+    </button>
 
-      <button
-        class="send-button"
-        onclick="askGuddu()"
-      >
-        Send
-      </button>
+    <button onclick="showMessage('💼 Work & Procurement mode is coming next.')">
+      💼 Work
+    </button>
 
-    </div>
+    <button onclick="showMessage('📄 Documents mode is coming next.')">
+      📄 Documents
+    </button>
 
+    <button onclick="showMessage('🔎 Research mode is coming next.')">
+      🔎 Research
+    </button>
 
-    <div id="taskSection" class="task-section" style="display:none;">
-
-      <h3>📋 My Tasks</h3>
-
-      <input
-        type="text"
-        id="taskInput"
-        class="task-input"
-        placeholder="Enter a task..."
-        onkeydown="handleTaskEnter(event)"
-      >
-
-      <button onclick="addTask()">
-        ➕ Add Task
-      </button>
-
-      <div id="taskList"></div>
-
-    </div>
+    <button onclick="showMessage('🎙️ Voice Assistant is coming next.')">
+      🎙️ Voice
+    </button>
 
   </div>
 
 
-  <script>
+  <!-- MESSAGE -->
 
-    let tasks =
-      JSON.parse(localStorage.getItem("gudduTasks")) || [];
+  <div id="message">
+    👋 Hello! I am Guddu. Choose an option or ask me something.
+  </div>
 
 
-    function showMessage(text) {
+  <!-- CHAT -->
 
-      document.getElementById("message").innerText = text;
+  <div class="chat-box">
+
+    <input
+      type="text"
+      id="userInput"
+      placeholder="Ask Guddu anything..."
+      onkeydown="handleEnter(event)"
+    >
+
+    <button
+      class="primary"
+      onclick="askGuddu()"
+    >
+      Send
+    </button>
+
+  </div>
+
+
+  <!-- TASKS -->
+
+  <div
+    id="taskSection"
+    class="section"
+    style="display:none;"
+  >
+
+    <h2>📋 My Tasks</h2>
+
+    <input
+      type="text"
+      id="taskInput"
+      placeholder="Enter a task..."
+      onkeydown="handleTaskEnter(event)"
+    >
+
+    <button onclick="addTask()">
+      ➕ Add Task
+    </button>
+
+    <div id="taskList"></div>
+
+  </div>
+
+
+  <!-- FINANCE -->
+
+  <div
+    id="financeSection"
+    class="section"
+    style="display:none;"
+  >
+
+    <h2>💰 Finance Dashboard</h2>
+
+
+    <!-- PORTFOLIO -->
+
+    <h3>📊 My Mutual Funds</h3>
+
+    <input
+      type="text"
+      id="fundName"
+      placeholder="Fund name"
+    >
+
+    <input
+      type="number"
+      id="fundAmount"
+      placeholder="Monthly SIP ₹"
+    >
+
+    <button onclick="addFund()">
+      ➕ Add Fund
+    </button>
+
+    <div id="fundList"></div>
+
+
+    <!-- TOTAL SIP -->
+
+    <div class="result">
+
+      <strong>Total Monthly SIP:</strong>
+
+      <div id="totalSip">
+        ₹0
+      </div>
+
+    </div>
+
+
+    <!-- SIP CALCULATOR -->
+
+    <h3>🧮 SIP Calculator</h3>
+
+    <input
+      type="number"
+      id="sipAmount"
+      placeholder="Monthly SIP ₹"
+    >
+
+    <input
+      type="number"
+      id="sipReturn"
+      placeholder="Expected annual return %"
+    >
+
+    <input
+      type="number"
+      id="sipYears"
+      placeholder="Investment period (years)"
+    >
+
+    <button onclick="calculateSIP()">
+      Calculate
+    </button>
+
+    <div
+      id="sipResult"
+      class="result"
+    ></div>
+
+
+    <!-- MARKET DIP -->
+
+    <h3>📉 Market Dip Planner</h3>
+
+    <p>
+      Enter your available extra investment amount.
+    </p>
+
+    <input
+      type="number"
+      id="dipAmount"
+      placeholder="Extra amount ₹"
+    >
+
+    <button onclick="calculateDip()">
+      Create Dip Plan
+    </button>
+
+    <div
+      id="dipResult"
+      class="result"
+    ></div>
+
+
+    <!-- NOTES -->
+
+    <h3>📝 Investment Notes</h3>
+
+    <input
+      type="text"
+      id="investmentNote"
+      placeholder="Example: Review portfolio every 6 months"
+    >
+
+    <button onclick="saveNote()">
+      Save Note
+    </button>
+
+    <div
+      id="notesList"
+      class="result"
+    ></div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  /* =========================
+     GENERAL
+  ========================= */
+
+  function showMessage(text) {
+
+    document.getElementById("message").innerText = text;
+
+  }
+
+
+  function handleEnter(event) {
+
+    if (event.key === "Enter") {
+
+      askGuddu();
 
     }
 
+  }
 
-    function openTasks() {
 
-      const section =
-        document.getElementById("taskSection");
+  /* =========================
+     CHAT
+  ========================= */
 
-      section.style.display = "block";
+  function askGuddu() {
+
+    const input =
+      document.getElementById("userInput");
+
+    const question =
+      input.value.trim();
+
+    if (question === "") {
 
       showMessage(
-        "🤖 Guddu: Your Tasks & Reminders are ready. 📋"
+        "🤖 Guddu: Please type something first."
       );
 
-      displayTasks();
+      return;
 
     }
 
-
-    function addTask() {
-
-      const input =
-        document.getElementById("taskInput");
-
-      const task =
-        input.value.trim();
+    const q =
+      question.toLowerCase();
 
 
-      if (task === "") {
-
-        showMessage(
-          "🤖 Guddu: Please enter a task."
-        );
-
-        return;
-
-      }
-
-
-      tasks.push({
-        text: task,
-        completed: false
-      });
-
-
-      saveTasks();
-
-      input.value = "";
-
-      displayTasks();
+    if (
+      q.includes("hello") ||
+      q.includes("hi") ||
+      q.includes("hey")
+    ) {
 
       showMessage(
-        "🤖 Guddu: Task added successfully! ✅"
+        "🤖 Guddu: Hello! 👋 How can I help you?"
       );
 
     }
 
+    else if (
+      q.includes("finance") ||
+      q.includes("investment") ||
+      q.includes("sip")
+    ) {
 
-    function displayTasks() {
+      openFinance();
 
-      const list =
-        document.getElementById("taskList");
+    }
 
-      list.innerHTML = "";
+    else if (
+      q.includes("task") ||
+      q.includes("reminder")
+    ) {
+
+      openTasks();
+
+    }
+
+    else if (
+      q.includes("what can you do") ||
+      q.includes("help")
+    ) {
+
+      showMessage(
+        "🤖 Guddu can currently manage Tasks 📋 and Finance 💰. Work, Documents, Research and Voice are coming next."
+      );
+
+    }
+
+    else {
+
+      showMessage(
+        '🤖 Guddu received: "' +
+        question +
+        '"'
+      );
+
+    }
+
+    input.value = "";
+
+  }
 
 
-      if (tasks.length === 0) {
+  /* =========================
+     TASKS
+  ========================= */
 
-        list.innerHTML =
-          "<p>No tasks yet. Add your first task! 😊</p>";
-
-        return;
-
-      }
+  let tasks =
+    JSON.parse(
+      localStorage.getItem("gudduTasks")
+    ) || [];
 
 
-      tasks.forEach(function(task, index) {
+  function openTasks() {
+
+    document.getElementById(
+      "taskSection"
+    ).style.display = "block";
+
+    document.getElementById(
+      "financeSection"
+    ).style.display = "none";
+
+    showMessage(
+      "🤖 Guddu: Your Tasks are ready. 📋"
+    );
+
+    displayTasks();
+
+  }
+
+
+  function addTask() {
+
+    const input =
+      document.getElementById("taskInput");
+
+    const task =
+      input.value.trim();
+
+    if (task === "") {
+
+      showMessage(
+        "🤖 Guddu: Enter a task first."
+      );
+
+      return;
+
+    }
+
+    tasks.push(task);
+
+    localStorage.setItem(
+      "gudduTasks",
+      JSON.stringify(tasks)
+    );
+
+    input.value = "";
+
+    displayTasks();
+
+    showMessage(
+      "🤖 Guddu: Task added successfully! ✅"
+    );
+
+  }
+
+
+  function displayTasks() {
+
+    const list =
+      document.getElementById("taskList");
+
+    list.innerHTML = "";
+
+    if (tasks.length === 0) {
+
+      list.innerHTML =
+        "<p>No tasks yet.</p>";
+
+      return;
+
+    }
+
+    tasks.forEach(
+      function(task, index) {
 
         const item =
           document.createElement("div");
 
-        item.className = "task-item";
+        item.className =
+          "card fund";
 
+        item.innerHTML =
+          "<span>" +
+          (index + 1) +
+          ". " +
+          task +
+          "</span>" +
 
-        const text =
-          document.createElement("span");
-
-        text.innerText =
-          (index + 1) + ". " + task.text;
-
-
-        const deleteButton =
-          document.createElement("button");
-
-        deleteButton.className =
-          "delete-button";
-
-        deleteButton.innerText =
-          "Delete";
-
-        deleteButton.onclick =
-          function() {
-
-            deleteTask(index);
-
-          };
-
-
-        item.appendChild(text);
-
-        item.appendChild(deleteButton);
+          "<button class='delete' onclick='deleteTask(" +
+          index +
+          ")'>Delete</button>";
 
         list.appendChild(item);
 
-      });
+      }
+    );
+
+  }
+
+
+  function deleteTask(index) {
+
+    tasks.splice(index, 1);
+
+    localStorage.setItem(
+      "gudduTasks",
+      JSON.stringify(tasks)
+    );
+
+    displayTasks();
+
+  }
+
+
+  function handleTaskEnter(event) {
+
+    if (event.key === "Enter") {
+
+      addTask();
 
     }
 
+  }
 
-    function deleteTask(index) {
 
-      tasks.splice(index, 1);
+  /* =========================
+     FINANCE
+  ========================= */
 
-      saveTasks();
+  let funds =
+    JSON.parse(
+      localStorage.getItem("gudduFunds")
+    ) || [];
 
-      displayTasks();
+
+  function openFinance() {
+
+    document.getElementById(
+      "financeSection"
+    ).style.display = "block";
+
+    document.getElementById(
+      "taskSection"
+    ).style.display = "none";
+
+    showMessage(
+      "🤖 Guddu: Finance Dashboard is ready. 💰"
+    );
+
+    displayFunds();
+
+    displayNotes();
+
+  }
+
+
+  function addFund() {
+
+    const name =
+      document.getElementById(
+        "fundName"
+      ).value.trim();
+
+    const amount =
+      Number(
+        document.getElementById(
+          "fundAmount"
+        ).value
+      );
+
+
+    if (
+      name === "" ||
+      amount <= 0
+    ) {
 
       showMessage(
-        "🤖 Guddu: Task deleted. 🗑️"
+        "🤖 Guddu: Enter a fund name and SIP amount."
       );
 
+      return;
+
     }
 
 
-    function saveTasks() {
+    funds.push({
 
-      localStorage.setItem(
-        "gudduTasks",
-        JSON.stringify(tasks)
+      name: name,
+
+      amount: amount
+
+    });
+
+
+    localStorage.setItem(
+      "gudduFunds",
+      JSON.stringify(funds)
+    );
+
+
+    document.getElementById(
+      "fundName"
+    ).value = "";
+
+    document.getElementById(
+      "fundAmount"
+    ).value = "";
+
+
+    displayFunds();
+
+    showMessage(
+      "🤖 Guddu: Fund added successfully! ✅"
+    );
+
+  }
+
+
+  function displayFunds() {
+
+    const list =
+      document.getElementById(
+        "fundList"
       );
 
+    list.innerHTML = "";
+
+    let total = 0;
+
+
+    funds.forEach(
+      function(fund, index) {
+
+        total += fund.amount;
+
+
+        const item =
+          document.createElement("div");
+
+        item.className =
+          "card fund";
+
+
+        item.innerHTML =
+          "<span>" +
+          fund.name +
+          "<br><strong>₹" +
+          fund.amount.toLocaleString("en-IN") +
+          " / month</strong></span>" +
+
+          "<button class='delete' onclick='deleteFund(" +
+          index +
+          ")'>Delete</button>";
+
+
+        list.appendChild(item);
+
+      }
+    );
+
+
+    document.getElementById(
+      "totalSip"
+    ).innerText =
+      "₹" +
+      total.toLocaleString("en-IN");
+
+  }
+
+
+  function deleteFund(index) {
+
+    funds.splice(index, 1);
+
+    localStorage.setItem(
+      "gudduFunds",
+      JSON.stringify(funds)
+    );
+
+    displayFunds();
+
+  }
+
+
+  /* =========================
+     SIP CALCULATOR
+  ========================= */
+
+  function calculateSIP() {
+
+    const P =
+      Number(
+        document.getElementById(
+          "sipAmount"
+        ).value
+      );
+
+    const annualRate =
+      Number(
+        document.getElementById(
+          "sipReturn"
+        ).value
+      );
+
+    const years =
+      Number(
+        document.getElementById(
+          "sipYears"
+        ).value
+      );
+
+
+    if (
+      P <= 0 ||
+      annualRate <= 0 ||
+      years <= 0
+    ) {
+
+      document.getElementById(
+        "sipResult"
+      ).innerText =
+        "Please enter valid values.";
+
+      return;
+
     }
 
 
-    function handleTaskEnter(event) {
+    const months =
+      years * 12;
 
-      if (event.key === "Enter") {
+    const monthlyRate =
+      annualRate / 12 / 100;
 
-        addTask();
 
-      }
+    const futureValue =
+      P *
+      (
+        (
+          Math.pow(
+            1 + monthlyRate,
+            months
+          ) - 1
+        ) /
+        monthlyRate
+      ) *
+      (1 + monthlyRate);
+
+
+    const invested =
+      P * months;
+
+
+    const profit =
+      futureValue - invested;
+
+
+    document.getElementById(
+      "sipResult"
+    ).innerHTML =
+
+      "<strong>Estimated Corpus:</strong> ₹" +
+      Math.round(
+        futureValue
+      ).toLocaleString("en-IN") +
+
+      "<br><strong>Total Invested:</strong> ₹" +
+      invested.toLocaleString("en-IN") +
+
+      "<br><strong>Estimated Gain:</strong> ₹" +
+      Math.round(
+        profit
+      ).toLocaleString("en-IN");
+
+  }
+
+
+  /* =========================
+     MARKET DIP PLANNER
+  ========================= */
+
+  function calculateDip() {
+
+    const amount =
+      Number(
+        document.getElementById(
+          "dipAmount"
+        ).value
+      );
+
+
+    if (amount <= 0) {
+
+      document.getElementById(
+        "dipResult"
+      ).innerText =
+        "Enter an extra investment amount.";
+
+      return;
+
+    }
+
+
+    const plan5 =
+      amount * 0.10;
+
+    const plan10 =
+      amount * 0.20;
+
+    const plan15 =
+      amount * 0.25;
+
+    const plan20 =
+      amount * 0.25;
+
+    const plan30 =
+      amount * 0.20;
+
+
+    document.getElementById(
+      "dipResult"
+    ).innerHTML =
+
+      "<strong>Suggested Dip Plan</strong>" +
+
+      "<br>Market -5% → ₹" +
+      Math.round(plan5).toLocaleString("en-IN") +
+
+      "<br>Market -10% → ₹" +
+      Math.round(plan10).toLocaleString("en-IN") +
+
+      "<br>Market -15% → ₹" +
+      Math.round(plan15).toLocaleString("en-IN") +
+
+      "<br>Market -20% → ₹" +
+      Math.round(plan20).toLocaleString("en-IN") +
+
+      "<br>Market -30% → ₹" +
+      Math.round(plan30).toLocaleString("en-IN");
+
+  }
+
+
+  /* =========================
+     NOTES
+  ========================= */
+
+  let notes =
+    JSON.parse(
+      localStorage.getItem("gudduNotes")
+    ) || [];
+
+
+  function saveNote() {
+
+    const input =
+      document.getElementById(
+        "investmentNote"
+      );
+
+    const note =
+      input.value.trim();
+
+
+    if (note === "") {
+
+      return;
 
     }
 
 
-    function handleEnter(event) {
-
-      if (event.key === "Enter") {
-
-        askGuddu();
-
-      }
-
-    }
+    notes.push(note);
 
 
-    function askGuddu() {
-
-      const input =
-        document.getElementById("userInput");
-
-      const message =
-        document.getElementById("message");
-
-      const question =
-        input.value.trim();
+    localStorage.setItem(
+      "gudduNotes",
+      JSON.stringify(notes)
+    );
 
 
-      if (question === "") {
+    input.value = "";
 
-        message.innerText =
-          "🤖 Guddu: Please type something first.";
+    displayNotes();
 
-        return;
-
-      }
+  }
 
 
-      const q =
-        question.toLowerCase();
+  function displayNotes() {
 
+    const list =
+      document.getElementById(
+        "notesList"
+      );
 
-      if (
-        q.includes("hello") ||
-        q.includes("hi") ||
-        q.includes("hey")
-      ) {
+    if (notes.length === 0) {
 
-        message.innerText =
-          "🤖 Guddu: Hello! 👋 How can I help you today?";
+      list.innerHTML =
+        "No investment notes yet.";
 
-      }
-
-
-      else if (
-        q.includes("what can you do") ||
-        q.includes("help")
-      ) {
-
-        message.innerText =
-          "🤖 Guddu can help with Tasks 📋, Finance 💰, Work 💼, Documents 📄, Research 🔎 and Voice 🎙️.";
-
-      }
-
-
-      else if (
-        q.includes("task") ||
-        q.includes("reminder")
-      ) {
-
-        openTasks();
-
-      }
-
-
-      else if (
-        q.includes("finance") ||
-        q.includes("investment") ||
-        q.includes("money")
-      ) {
-
-        message.innerText =
-          "🤖 Guddu: Finance mode 💰 is ready.";
-
-      }
-
-
-      else if (
-        q.includes("work") ||
-        q.includes("procurement") ||
-        q.includes("supplier") ||
-        q.includes("purchase")
-      ) {
-
-        message.innerText =
-          "🤖 Guddu: Work & Procurement mode 💼 is ready.";
-
-      }
-
-
-      else if (
-        q.includes("document") ||
-        q.includes("contract")
-      ) {
-
-        message.innerText =
-          "🤖 Guddu: Documents mode 📄 is ready.";
-
-      }
-
-
-      else if (
-        q.includes("research") ||
-        q.includes("search")
-      ) {
-
-        message.innerText =
-          "🤖 Guddu: Research mode 🔎 is ready.";
-
-      }
-
-
-      else {
-
-        message.innerText =
-          '🤖 Guddu: I received your message — "' +
-          question +
-          '"';
-
-      }
-
-
-      input.value = "";
+      return;
 
     }
 
-  </script>
+
+    list.innerHTML =
+      notes.map(
+        function(note, index) {
+
+          return (
+            (index + 1) +
+            ". " +
+            note
+          );
+
+        }
+      ).join("<br>");
+
+  }
+
+</script>
 
 </body>
 </html>
