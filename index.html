@@ -103,14 +103,35 @@
     <div id="message">
       👋 Hello! I am Guddu. Choose an option above.
     </div>
+    <div style="display:flex; gap:10px; margin-top:15px;">
+  <input
+    type="text"
+    id="userInput"
+    placeholder="Ask Guddu anything..."
+    style="flex:1; padding:14px; border:1px solid #ddd; border-radius:10px; font-size:16px;"
+  >
 
-  </div>
-
+  <button onclick="askGuddu()"
+    style="background:#222; color:white; padding:14px 18px; border-radius:10px;">
+    Send
   <script>
-    function showMessage(text) {
-      document.getElementById("message").innerText = text;
-    }
-  </script>
+  function showMessage(text) {
+    document.getElementById("message").innerText = text;
+  }
 
-</body>
-</html>
+  function askGuddu() {
+    const input = document.getElementById("userInput");
+    const message = document.getElementById("message");
+    const question = input.value.trim();
+
+    if (question === "") {
+      message.innerText = "🤖 Guddu: Please type something first.";
+      return;
+    }
+
+    message.innerText =
+      "🤖 Guddu: I received your message — \"" + question + "\"";
+
+    input.value = "";
+  }
+  </script>
